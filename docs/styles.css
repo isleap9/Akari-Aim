@@ -7,9 +7,9 @@
   --text: #eceef3;
   --text-dim: #9aa0ad;
   --text-faint: #5f6673;
-  --akari: #f4c26b;
-  --akari-soft: #f4c26b26;
-  --akari-deep: #c8933a;
+  --akari: #eb2422;
+  --akari-soft: #eb242226;
+  --akari-deep: #c21b19;
   --good: #6fcf97;
   --radius: 10px;
   --radius-lg: 16px;
@@ -59,16 +59,15 @@ body {
 .wordmark {
   display: inline-flex;
   align-items: center;
-  gap: 11px;
-  margin-bottom: 8px;
+  gap: 13px;
+  margin-bottom: 10px;
 }
 
-.lantern {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--akari);
-  box-shadow: 0 0 14px 2px var(--akari), 0 0 30px 6px var(--akari-soft);
+.logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px var(--akari-soft));
 }
 
 .wordmark-text {
