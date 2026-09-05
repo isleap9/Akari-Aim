@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Akari Aim — Apex Legends sensitivity converter</title>
+  <meta name="description" content="Convert any Apex Legends player's sensitivity to your own DPI, and see your effective ADS sensitivity for every scope. Match their exact cm/360°.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="glow" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wordmark">
+      <span class="lantern" aria-hidden="true"></span>
+      <span class="wordmark-text">Akari<span class="wordmark-accent"> Aim</span></span>
+    </div>
+    <p class="tagline">Apex Legends sensitivity converter</p>
+  </header>
+
+  <main class="app">
+
+    <section class="lede">
+      <h1>Match any player's aim at your own&nbsp;DPI</h1>
+      <p>Enter a reference setup, drop in your DPI, and get the sensitivity that keeps the exact same cm&nbsp;per&nbsp;360°. Then check your effective sensitivity for every scope.</p>
+    </section>
+
+    <div class="panel">
+
+      <div class="field-group">
+        <span class="field-group-label">Reference setup</span>
+        <div class="row-2">
+          <label class="field">
+            <span class="field-label">DPI</span>
+            <input type="number" id="refDpi" inputmode="numeric" min="1" autocomplete="off">
+          </label>
+          <label class="field">
+            <span class="field-label">Sensitivity</span>
+            <input type="number" id="refSens" inputmode="decimal" step="0.1" min="0.01" autocomplete="off">
+          </label>
+        </div>
+        <div class="mini-stat" id="refStat" hidden>
+          <span>Reference cm/360°</span>
+          <span class="mono" id="refCm360"></span>
+        </div>
+      </div>
+
+      <div class="flow-divider" aria-hidden="true">
+        <span></span><i class="chevron"></i><span></span>
+      </div>
+
+      <div class="field-group">
+        <label class="field field-narrow">
+          <span class="field-label">Your DPI</span>
+          <input type="number" id="yourDpi" inputmode="numeric" min="1" autocomplete="off">
+        </label>
+      </div>
+
+      <div class="result" id="resultEmpty">
+        <p>Enter a reference DPI and sensitivity to see your equivalent.</p>
+      </div>
+
+      <div class="result result-active" id="resultCard" hidden>
+        <span class="result-label">Your Apex sensitivity</span>
+        <div class="result-value-row">
+          <span class="result-value mono" id="yourSensVal"></span>
+          <button class="copy-btn" id="copyBtn" type="button">Copy</button>
+        </div>
+        <div class="result-note">
+          <span class="dot" aria-hidden="true"></span>
+          <span id="yourCm360Label"></span>
+        </div>
+      </div>
+
+      <div class="section-divider" aria-hidden="true">
+        <span></span><span class="section-divider-label">ADS</span><span></span>
+      </div>
+
+      <div class="field-group">
+        <span class="field-group-label">ADS sensitivity per scope</span>
+        <p class="field-hint">Enter your in-game per-optic multipliers to see the effective sensitivity behind each scope.</p>
+
+        <div class="ads-table">
+          <div class="ads-head">
+            <span>Zoom</span>
+            <span>Multiplier</span>
+            <span class="right">Effective</span>
+            <span class="right">cm/360°</span>
+          </div>
+          <div id="adsRows"></div>
+        </div>
+      </div>
+
+      <p class="formula mono">sens₂ = sens₁ × (dpi₁ ÷ dpi₂)</p>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>Akari Aim · a sensitivity tool for Apex Legends</p>
+    <p class="footer-fine">Not affiliated with or endorsed by Electronic Arts or Respawn Entertainment.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
