@@ -37,6 +37,7 @@ It's a static site — no build step. Open `index.html` directly, or serve the f
 ```bash
 python3 -m http.server
 # then visit http://localhost:8000
+https://isleap9.github.io/Akari-Aim/
 ```
 
 ## Deploying
