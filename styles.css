@@ -351,6 +351,99 @@ input[type="number"] { -moz-appearance: textfield; }
   letter-spacing: 0.02em;
 }
 
+.meta {
+  max-width: 520px;
+  margin: 2rem auto 0;
+  padding: 0 1.5rem;
+}
+
+.meta-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.meta-header h2 {
+  font-size: 1.15rem;
+  font-weight: 500;
+}
+
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.72rem;
+  color: var(--akari);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--akari);
+  box-shadow: 0 0 8px 1px var(--akari);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.meta-status {
+  font-size: 0.88rem;
+  color: var(--text-faint);
+  padding: 1.25rem;
+  background: var(--ink-raised);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.meta-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 1rem 1.15rem;
+  background: var(--ink-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+}
+
+.meta-mode {
+  font-size: 0.72rem;
+  color: var(--text-faint);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.meta-map {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.meta-remaining {
+  font-size: 0.85rem;
+  color: var(--akari);
+  font-family: var(--font-mono);
+}
+
+.meta-next {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
 .site-footer {
   max-width: 520px;
   margin: 3rem auto 0;
@@ -359,6 +452,8 @@ input[type="number"] { -moz-appearance: textfield; }
 }
 .site-footer p { font-size: 0.8rem; color: var(--text-faint); }
 .footer-fine { margin-top: 6px; font-size: 0.72rem; color: #454b57; }
+.footer-fine a { color: var(--text-dim); text-decoration: underline; }
+.footer-fine a:hover { color: var(--akari); }
 
 @media (max-width: 440px) {
   .lede h1 { font-size: 1.4rem; }

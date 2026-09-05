@@ -1,6 +1,14 @@
 (function () {
   "use strict";
 
+  // ── Live meta config ──────────────────────────────────────────────
+  // Paste your Cloudflare Worker URL here (no trailing slash). Until you
+  // set this, the meta panel shows a friendly "not configured" message
+  // instead of erroring.
+  var META_WORKER_URL = "https://akari-aim-meta.pierluigisassanelli98.workers.dev"; // Cloudflare Worker
+  var META_REFRESH_MS = 60000; // re-fetch every 60s
+  // ──────────────────────────────────────────────────────────────────
+
   // Apex Legends yaw constant (degrees turned per mouse count at sensitivity 1)
   var APEX_YAW = 0.022;
   var ZOOMS = ["1×", "2×", "3×", "4×", "6×", "8×", "10×"];
@@ -127,4 +135,95 @@
 
   buildAdsRows();
   update();
+
+  // ── Live map rotation ─────────────────────────────────────────────
+  var metaEl = {
+    panel: document.getElementById("metaPanel"),
+    status: document.getElementById("metaStatus"),
+    grid: document.getElementById("metaGrid"),
+  };
+
+  function fmtRemaining(secs) {
+    if (secs == null || secs < 0) return "";
+    var h = Math.floor(secs / 3600);
+    var m = Math.floor((secs % 3600) / 60);
+    if (h > 0) return h + "h " + m + "m";
+    return m + "m";
+  }
+
+  function modeCard(label, block) {
+    if (!block || !block.current) return "";
+    var cur = block.current;
+    var next = block.next || {};
+    // remainingSecs isn't present on every mode (e.g. ranked), so guard it.
+    var remaining =
+      typeof cur.remainingSecs === "number"
+        ? fmtRemaining(cur.remainingSecs)
+        : cur.remainingTimer || "";
+    if (!cur.map) return "";
+    return (
+      '<div class="meta-card">' +
+      '<span class="meta-mode">' + label + "</span>" +
+      '<span class="meta-map">' + cur.map + "</span>" +
+      (remaining
+        ? '<span class="meta-remaining">' + remaining + " left</span>"
+        : "") +
+      (next.map
+        ? '<span class="meta-next">Next: ' + next.map + "</span>"
+        : "") +
+      "</div>"
+    );
+  }
+
+  function renderRotation(data) {
+    if (!data || data.error) {
+      metaEl.status.textContent =
+        "Couldn't load live rotation. Retrying shortly.";
+      metaEl.status.hidden = false;
+      metaEl.grid.hidden = true;
+      return;
+    }
+    var cards = "";
+    cards += modeCard("Battle Royale", data.battle_royale);
+    cards += modeCard("Ranked", data.ranked);
+    // The limited-time / mixtape mode has appeared under a few keys over time;
+    // check the known ones so we stay compatible.
+    cards += modeCard("Mixtape", data.ltm || data.mixtape || data.control);
+    if (!cards) {
+      metaEl.status.textContent = "No rotation data available right now.";
+      metaEl.status.hidden = false;
+      metaEl.grid.hidden = true;
+      return;
+    }
+    metaEl.grid.innerHTML = cards;
+    metaEl.grid.hidden = false;
+    metaEl.status.hidden = true;
+  }
+
+  function loadRotation() {
+    if (!META_WORKER_URL) {
+      metaEl.status.textContent =
+        "Live rotation isn't connected yet. (Set your Worker URL in app.js.)";
+      metaEl.status.hidden = false;
+      return;
+    }
+    fetch(META_WORKER_URL + "/maprotation")
+      .then(function (r) {
+        if (!r.ok) throw new Error("bad status " + r.status);
+        return r.json();
+      })
+      .then(function (data) {
+        renderRotation(data);
+      })
+      .catch(function () {
+        metaEl.status.textContent =
+          "Couldn't load live rotation. Retrying shortly.";
+        metaEl.status.hidden = false;
+      });
+  }
+
+  if (metaEl.panel) {
+    loadRotation();
+    setInterval(loadRotation, META_REFRESH_MS);
+  }
 })();
